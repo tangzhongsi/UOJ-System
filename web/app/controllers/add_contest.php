@@ -1,7 +1,8 @@
 <?php
 	requirePHPLib('form');
 	
-	if (!isSuperUser($myUser)) {
+	if (!isSuperUser($myUser))
+	{
 		become403Page();
 	}
 	$time_form = new UOJForm('time');

@@ -1,17 +1,13 @@
 <?php
 	function validateZan() {
-		if (!validateUInt($_POST['id'])) {
+		if (!validateUInt($_POST['id']))
 			return false;
-		}
-		if (!validateInt($_POST['delta'])) {
+		if (!validateInt($_POST['delta']))
 			return false;
-		}
-		if ($_POST['delta'] != 1 && $_POST['delta'] != -1) {
+		if ($_POST['delta'] != 1 && $_POST['delta'] != -1)
 			return false;
-		}
-		if ($_POST['type'] != 'B' && $_POST['type'] != 'BC' && $_POST['type'] != 'P' && $_POST['type'] != 'C') {
+		if ($_POST['type'] != 'B' && $_POST['type'] != 'BC' && $_POST['type'] != 'P' && $_POST['type'] != 'C')
 			return false;
-		}
 		return true;
 	}
 	if (!validateZan()) {
@@ -50,7 +46,7 @@
 		$cur += $delta;
 		if ($cur == 0) {
 			DB::query("delete from click_zans where username = '{$myUser['username']}' and type = '$type' and target_id = $id");
-		} elseif ($cur != $delta) {
+		} else if ($cur != $delta) {
 			DB::query("update click_zans set val = '$cur' where username = '{$myUser['username']}' and type = '$type' and target_id = $id");
 		} else {
 			DB::query("insert into click_zans (username, type, target_id, val) values ('{$myUser['username']}', '$type', $id, $cur)");

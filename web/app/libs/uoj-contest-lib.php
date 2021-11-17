@@ -35,13 +35,11 @@ function calcRating($standings, $K = 400) {
 		$weight[$i] = pow(7, $rating[$i] / $DELTA);
 	}
 	$exp = array_fill(0, $n, 0);
-	for ($i = 0; $i < $n; ++$i) {
-		for ($j = 0; $j < $n; ++$j) {
+	for ($i = 0; $i < $n; ++$i)
+		for ($j = 0; $j < $n; ++$j)
 			if ($j != $i) {
 				$exp[$i] += $weight[$i] / ($weight[$i] + $weight[$j]);
 			}
-		}
-	}
 	
 	$new_rating = array();
 	for ($i = 0; $i < $n; $i++) {
@@ -107,14 +105,14 @@ function genMoreContestInfo(&$contest) {
 	if ($contest['status'] == 'unfinished') {
 		if (UOJTime::$time_now < $contest['start_time']) {
 			$contest['cur_progress'] = CONTEST_NOT_STARTED;
-		} elseif (UOJTime::$time_now < $contest['end_time']) {
+		} else if (UOJTime::$time_now < $contest['end_time']) {
 			$contest['cur_progress'] = CONTEST_IN_PROGRESS;
 		} else {
 			$contest['cur_progress'] = CONTEST_PENDING_FINAL_TEST;
 		}
-	} elseif ($contest['status'] == 'testing') {
+	} else if ($contest['status'] == 'testing') {
 		$contest['cur_progress'] = CONTEST_TESTING;
-	} elseif ($contest['status'] == 'finished') {
+	} else if ($contest['status'] == 'finished') {
 		$contest['cur_progress'] = CONTEST_FINISHED;
 	}
 	$contest['extra_config'] = json_decode($contest['extra_config'], true);
@@ -192,7 +190,7 @@ function calcStandings($contest, $contest_data, &$score, &$standings, $update_co
 	foreach ($contest_data['people'] as $person) {
 		$score[$person[0]] = array();
 	}
-	foreach ($contest_data['data'] as $submission) {
+	foreach ($contest_data['data'] as $submission) {		
 		$penalty = (new DateTime($submission[1]))->getTimestamp() - $contest['start_time']->getTimestamp();
 		if ($contest['extra_config']['standings_version'] >= 2) {
 			if ($submission[4] == 0) {
@@ -222,7 +220,7 @@ function calcStandings($contest, $contest_data, &$score, &$standings, $update_co
 	usort($standings, function($lhs, $rhs) {
 		if ($lhs[0] != $rhs[0]) {
 			return $rhs[0] - $lhs[0];
-		} elseif ($lhs[1] != $rhs[1]) {
+		} else if ($lhs[1] != $rhs[1]) {
 			return $lhs[1] - $rhs[1];
 		} else {
 			return strcmp($lhs[2][0], $rhs[2][0]);

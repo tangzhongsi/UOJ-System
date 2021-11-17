@@ -18,7 +18,7 @@
 		$user = queryUser($username);
 		if ($user == null) {
 			return '不明错误';
-		}
+	}
 		if ($check_code !== md5($user['username'] . '+' . $user['password'])) {
 			return '不明错误';
 		}
@@ -63,7 +63,7 @@ $(document).ready(function() {
 		if (!validateResetPwPost()) {
 			return false;
 		}
-		$.post(<?= json_encode($_SERVER['REQUEST_URI']) ?>, {
+		$.post('<?=$_SERVER['REQUEST_URI']?>', {
 			reset : '',
 			newPW : md5($('#input-password').val(), "<?= getPasswordClientSalt() ?>")
 		}, function(res) {

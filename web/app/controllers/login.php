@@ -33,6 +33,9 @@
 		}
 		
 		Auth::login($user['username']);
+		if($user['register_time'] == "0000-00-00 00:00:00")
+			return "init";
+
 		return "ok";
 	}
 	
@@ -63,7 +66,7 @@
   </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-3">
-      <button type="submit" id="button-submit" class="btn btn-secondary"><?= UOJLocale::get('submit') ?></button>
+      <button type="submit" id="button-submit" class="btn btn-primary"><?= UOJLocale::get('submit') ?></button>
     </div>
   </div>
 </form>
@@ -85,7 +88,7 @@ function submitLoginPost() {
 		_token : "<?= crsf_token() ?>",
 		login : '',
 		username : $('#input-username').val(),
-		password : md5($('#input-password').val(), "<?= getPasswordClientSalt() ?>")
+		password : md5($('#input-password').val() + "<?= getPasswordClientSalt() ?>")
 	}, function(msg) {
 		if (msg == 'ok') {
 			var prevUrl = document.referrer;
@@ -93,6 +96,8 @@ function submitLoginPost() {
 				prevUrl = '/';
 			};
 			window.location.href = prevUrl;
+		} else if (msg == 'init') {
+			window.location.href = '/user/modify-profile';
 		} else if (msg == 'banned') {
 			$('#div-username').addClass('has-error');
 			$('#help-username').html('该用户已被封停，请联系管理员。');
@@ -101,9 +106,9 @@ function submitLoginPost() {
 			$('#help-username').html('页面会话已过期。');
 		} else {
 			$('#div-username').addClass('has-error');
-			$('#help-username').html('用户名或密码错误。');
+			$('#help-username').html('学号或密码错误。');
 			$('#div-password').addClass('has-error');
-			$('#help-password').html('用户名或密码错误。<a href="/forgot-password">忘记密码？</a>');
+			$('#help-password').html('学号或密码错误。<a href="/forgot-password">忘记密码？</a>');
 		}
 	});
 	return true;

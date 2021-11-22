@@ -17,8 +17,8 @@ return [
 	'all the announcements' => '所有公告……',
 	'help' => '帮助',
 	'search' => '搜索',
-	'top rated' => '比赛排行榜',
-	'username' => '用户名',
+	'top rated' => '排行榜',
+	'username' => '学号',
 	'password' => '密码',
 	'new password' => '新密码',
 	'email' => 'Email',
@@ -54,7 +54,7 @@ return [
 	'please enter your new profile' => '请输入新的个人信息',
 	'leave it blank if you do not want to change the password' => '如果不想修改密码请留空',
 	'change avatar help' => '想改头像？见<a href="/faq">帮助</a>',
-	'enter your username' => '输入用户名',
+	'enter your username' => '输入学号',
 	'enter your email' => '输入Email',
 	'enter your password' => '输入密码',
 	're-enter your password' => '重新输入密码',
@@ -65,5 +65,6 @@ return [
 	'male' => '男',
 	'female' => '女',
 	'server time' => '服务器时间',
-	'opensource project' => '开源项目'
+	'opensource project' => '开源项目',
+	'reset password' => '更改密码'
 ];

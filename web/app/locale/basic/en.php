@@ -18,7 +18,7 @@ return [
 	'help' => 'Help',
 	'search' => 'Search',
 	'top rated' => 'Top rated',
-	'username' => 'Username',
+	'username' => 'Student ID',
 	'password' => 'Password',
 	'new password' => 'New password',
 	'email' => 'Email',
@@ -54,7 +54,7 @@ return [
 	'please enter your new profile' => 'Please enter your new profile',
 	'leave it blank if you do not want to change the password' => 'Leave it blank if you do not want to change the password',
 	'change avatar help' => 'Do you want to change your avatar? Please see <a href="/faq">Help</a>',
-	'enter your username' => 'Enter your username',
+	'enter your username' => 'Enter your student ID',
 	'enter your email' => 'Enter your email',
 	'enter your password' => 'Enter your password',
 	're-enter your password' => 'Re-enter your password',
@@ -65,5 +65,6 @@ return [
 	'male' => 'Male',
 	'female' => 'Female',
 	'server time' => 'Server Time',
-	'opensource project' => 'OpenSource Project'
+	'opensource project' => 'OpenSource Project',
+	'reset password' => 'Reset Password'
 ];

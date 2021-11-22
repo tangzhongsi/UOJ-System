@@ -7,10 +7,10 @@
 	}
 	
 	$user_form = new UOJForm('user');
-	$user_form->addInput('username', 'text', '用户名', '',
+	$user_form->addInput('username', 'text', '学号', '',
 		function ($username) {
 			if (!validateUsername($username)) {
-				return '用户名不合法';
+				return '学号不合法';
 			}
 			if (!queryUser($username)) {
 				return '用户不存在';
@@ -269,7 +269,7 @@ EOD;
 	$banlist_config = array();
 	$banlist_header_row = <<<EOD
 	<tr>
-		<th>用户名</th>
+		<th>学号</th>
 	</tr>
 EOD;
 	$banlist_print_row = function($row) {

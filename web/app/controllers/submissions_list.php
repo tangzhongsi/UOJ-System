@@ -6,10 +6,10 @@
 	$q_min_score = isset($_GET['min_score']) && validateUInt($_GET['min_score']) ? $_GET['min_score'] : null;
 	$q_max_score = isset($_GET['max_score']) && validateUInt($_GET['max_score']) ? $_GET['max_score'] : null;
 	$q_language = isset($_GET['language']) ? $_GET['language'] : null;
-	if ($q_problem_id != null) {
+	if($q_problem_id != null) {
 		$conds[] = "problem_id = $q_problem_id";
 	}
-	if ($q_submitter != null) {
+	if($q_submitter != null) {
 		$conds[] = "submitter = '$q_submitter'";
 	}
 	if ($q_min_score != null) {
@@ -32,11 +32,9 @@
 ?>
 <?php echoUOJPageHeader(UOJLocale::get('submissions')) ?>
 <div class="d-none d-sm-block">
-	<?php if ($myUser != null): ?>
 	<div class="float-right">
-		<a href="/submissions?submitter=<?= $myUser['username'] ?>" class="btn btn-primary btn-sm"><?= UOJLocale::get('problems::my submissions') ?></a>
+		<a href="/" class="btn btn-primary btn-sm"><?= UOJLocale::get('problems::return to problem') ?></a>
 	</div>
-	<?php endif ?>
 	<form id="form-search" class="form-inline" method="get">
 		<div id="form-group-problem_id" class="form-group">
 			<label for="input-problem_id" class="control-label"><?= UOJLocale::get('problems::problem id')?>:</label>
@@ -56,7 +54,7 @@
 			<label for="input-language" class="control-label"><?= UOJLocale::get('problems::language')?>:</label>
 			<input type="text" class="form-control input-sm" name="language" id="input-language" value="<?= $html_esc_q_language ?>" maxlength="10" style="width:8em" />
 		</div>
-		<button type="submit" id="submit-search" class="btn btn-secondary btn-sm ml-2"><?= UOJLocale::get('search')?></button>
+		<button type="submit" id="submit-search" class="btn btn-primary btn-sm ml-2"><?= UOJLocale::get('search')?></button>
 	</form>
 	<script type="text/javascript">
 		$('#form-search').submit(function(e) {
@@ -78,6 +76,10 @@
 	<div class="top-buffer-sm"></div>
 </div>
 <?php
-	echoSubmissionsList($cond, 'order by id desc', array('judge_time_hidden' => ''), $myUser);
+	echoSubmissionsList($cond, 'order by id desc', 
+	array('judge_time_hidden' => '',
+		  'problem_hidden' => '',
+		  'table_config' => array('page_len' => 15)
+	), $myUser);
 ?>
 <?php echoUOJPageFooter() ?>

@@ -19,7 +19,7 @@
 			global $problem;
 			if ($type == '+') {
 				DB::query("insert into problems_permissions (problem_id, username) values (${problem['id']}, '$username')");
-			} elseif ($type == '-') {
+			} else if ($type == '-') {
 				DB::query("delete from problems_permissions where problem_id = ${problem['id']} and username = '$username'");
 			}
 		}
@@ -40,7 +40,7 @@
 	<thead>
 		<tr>
 			<th>#</th>
-			<th>用户名</th>
+			<th>学号</th>
 		</tr>
 	</thead>
 	<tbody>

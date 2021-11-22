@@ -9,6 +9,10 @@ class Auth {
 		global $myUser;
 		return $myUser['username'];
 	}
+	public static function realName() {
+		global $myUser;
+		return $myUser['motto'];
+	}
 	public static function user() {
 		global $myUser;
 		return $myUser;

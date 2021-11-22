@@ -65,7 +65,7 @@ $(document).ready(function() {
 		}
 		$.post('<?=$_SERVER['REQUEST_URI']?>', {
 			reset : '',
-			newPW : md5($('#input-password').val(), "<?= getPasswordClientSalt() ?>")
+			newPW : md5($('#input-password').val() + "<?= getPasswordClientSalt() ?>")
 		}, function(res) {
 			if (res == 'ok') {
 				BootstrapDialog.show({

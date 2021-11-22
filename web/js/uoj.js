@@ -172,7 +172,7 @@ function getUserSpan(username, rating, addSymbol) {
 			text += "</sup>";
 		}
 	}
-	return '<span class="uoj-username" style="color:' + getColOfRating(rating) + '">' + text + '</span>';
+	return '<span class="uoj-username" >' + text + '</span>';
 }
 
 function replaceWithHighlightUsername() {

@@ -10,7 +10,8 @@ Route::pattern('upgrade_name', '[a-zA-Z0-9_]{1,50}');
 Route::group([
 		'domain' => '('.UOJConfig::$data['web']['main']['host'].'|127.0.0.1'.')'
 	], function() {
-		Route::any('/', '/index.php');
+		// Route::any('/', '/index.php');
+		Route::any('/', '/problem.php?id=1');
 		Route::any('/problems', '/problem_set.php');
 		Route::any('/problems/template', '/problem_set.php?tab=template');
 		Route::any('/problem/{id}', '/problem.php');
@@ -64,6 +65,7 @@ Route::group([
 		Route::any('/download.php', '/download.php');
 		
 		Route::any('/click-zan', '/click_zan.php');
+		Route::any('/add-users', '/add_users.php');
 	}
 );
 

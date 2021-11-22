@@ -231,25 +231,20 @@
 				<?php if (Auth::check()): ?>
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
-							<span class="uoj-username" data-rating="<?= Auth::user()['rating'] ?>" data-link="0"><?= Auth::id() ?></span> <?= $new_msg_tot_html ?>
+							<span class="uoj-username" data-rating="<?= Auth::user()['rating'] ?>" data-link="0"><?= Auth::realName() ?></span> <?= $new_msg_tot_html ?>
 						</a>
 						<ul class="dropdown-menu" role="menu">
-							<li role="presentation"><a class="dropdown-item" href="<?= HTML::url('/user/profile/' . Auth::id()) ?>"><?= UOJLocale::get('my profile') ?></a></li>
-							<li role="presentation"><a class="dropdown-item" href="<?= HTML::url('/user/msg') ?>"><?= UOJLocale::get('private message') ?>&nbsp;&nbsp;<?= $new_user_msg_num_html ?></a></li>
-							<li role="presentation"><a class="dropdown-item" href="<?= HTML::url('/user/system-msg') ?>"><?= UOJLocale::get('system message') ?>&nbsp;&nbsp;<?= $new_system_msg_num_html ?></a></li>
+							<li role="presentation"><a class="dropdown-item" href="<?= HTML::url('/logout?_token='.crsf_token()) ?>"><?= UOJLocale::get('logout') ?></a></li>
 							<?php if (isSuperUser(Auth::user())): ?>
 								<li role="presentation"><a class="dropdown-item" href="<?= HTML::url('/super-manage') ?>"><?= UOJLocale::get('system manage') ?></a></li>
 							<?php endif ?>
 						</ul>
 					</li>
-					<li class="nav-item" role="presentation"><a class="nav-link" href="<?= HTML::url('/logout?_token='.crsf_token()) ?>"><?= UOJLocale::get('logout') ?></a></li>
 				<?php else: ?>
 					<li class="nav-item" role="presentation"><a class="nav-link" href="<?= HTML::url('/login') ?>"><?= UOJLocale::get('login') ?></a></li>
-					<li class="nav-item" role="presentation"><a class="nav-link" href="<?= HTML::url('/register') ?>"><?= UOJLocale::get('register') ?></a></li>
 				<?php endif ?>
 				</ul>
-				<h1 class="d-none d-sm-block"><a href="<?= HTML::url('/') ?>"><img src="<?= HTML::url('/images/logo_small.png') ?>" alt="Logo" class="img-rounded" style="width:39px; height:39px;" /></a> <?= $PageMainTitle ?></h1>
-				<h1 class="d-block d-sm-none"><?= $PageMainTitleOnSmall ?></h1>
+				<h1 class="d-none d-sm-block" id="mylogo"><a href="<?= HTML::url('/') ?>"><img src="<?= HTML::url('/images/logo_small.svg') ?>" alt="Logo" class="img-rounded" style="height:39px;" /></a> </h1>
 			</div>
 			
 			<?php uojIncludeView($PageNav) ?>

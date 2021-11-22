@@ -27,7 +27,7 @@ return [
 	'score distribution' => '得分分布',
 	'prefix sum of score distribution' => '前缀和',
 	'suffix sum of score distribution' => '后缀和',
-	'submitter' => '提交者',
+	'submitter' => '姓名',
 	'hacker' => 'Hacker',
 	'owner' => 'Owner',
 	'result' => '结果',
@@ -42,6 +42,7 @@ return [
 	'hack' => 'Hack',
 	'submission id' => '提交记录ID',
 	'my submissions' => '我的提交记录',
+	'return to problem' => '返回题目',
 	'hacks by me' => '我的Hack记录',
 	'hacks to me' => '我的被Hack记录'
 ];

@@ -17,10 +17,10 @@
 		$password = $_POST['password'];
 		$email = $_POST['email'];
 		if (!validateUsername($username)) {
-			return "失败：无效用户名。";
+			return "失败：无效学号。";
 		}
 		if (queryUser($username)) {
-			return "失败：用户名已存在。";
+			return "失败：学号已存在。";
 		}
 		if (!validatePassword($password)) {
 			return "失败：无效密码。";
@@ -122,7 +122,7 @@ function validateRegisterPost() {
 		if (err)
 			return err;
 		if (!checkUsernameNotInUse())
-			return '该用户名已被人使用了。';
+			return '该学号已被人使用了。';
 		return '';
 	})
 	ok &= getFormErrorAndShowHelp('password', validateSettingPassword);
@@ -139,7 +139,7 @@ function submitRegisterPost() {
 		register : '',
 		username : $('#input-username').val(),
 		email		: $('#input-email').val(),
-		password : md5($('#input-password').val(), "<?= getPasswordClientSalt() ?>")
+		password : md5($('#input-password').val() + "<?= getPasswordClientSalt() ?>")
 	}, function(msg) {
 		if (/^欢迎你！/.test(msg)) {
 			BootstrapDialog.show({

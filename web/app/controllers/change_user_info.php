@@ -2,17 +2,20 @@
 	if (!Auth::check()) {
 		redirectToLogin();
 	}
+	if ($myUser['register_time'] != "0000-00-00 00:00:00") {
+		redirectToLogin();
+	}
 	function handlePost() {
 		global $myUser;
 		if (!isset($_POST['old_password']))
 		{
 			return '无效表单';
 		}
-		$old_password = $_POST['old_password'];
-		if (!validatePassword($old_password) || !checkPassword($myUser, $old_password))
-		{
-			return "失败：密码错误。";
-		}
+		// $old_password = $_POST['old_password'];
+		// if (!validatePassword($old_password) || !checkPassword($myUser, $old_password))
+		// {
+		// 	return "失败：密码错误。";
+		// }
 		if ($_POST['ptag'])
 		{
 			$password = $_POST['password'];
@@ -56,6 +59,8 @@
 			DB::update("update user_info set motto = '$esc_motto' where username = '{$myUser['username']}'");
 		}
 		
+		DB::update("update user_info set register_time = now() where username = '{$myUser['username']}'");
+		
 		return "ok";
 	}
 	if (isset($_POST['change'])) {
@@ -66,14 +71,14 @@
 	$REQUIRE_LIB['dialog'] = '';
 	$REQUIRE_LIB['md5'] = '';
 ?>
-<?php echoUOJPageHeader(UOJLocale::get('modify my profile')) ?>
-<h2 class="page-header"><?= UOJLocale::get('modify my profile') ?></h2>
+<?php echoUOJPageHeader(UOJLocale::get('reset password')) ?>
+<h2 class="page-header"><?= UOJLocale::get('reset password') ?></h2>
 <form id="form-update" class="form-horizontal">
 	<h4><?= UOJLocale::get('please enter your password for authorization') ?></h4>
 	<div id="div-old_password" class="form-group">
 		<label for="input-old_password" class="col-sm-2 control-label"><?= UOJLocale::get('password') ?></label>
 		<div class="col-sm-3">
-			<input type="password" class="form-control" name="old_password" id="input-old_password" placeholder="<?= UOJLocale::get('enter your password') ?>" maxlength="20" />
+			<input type="password" class="form-control" name="old_password" id="input-old_password" value="000000" placeholder="<?= UOJLocale::get('enter your password') ?>" maxlength="20" />
 			<span class="help-block" id="help-old_password"></span>
 		</div>
 	</div>
@@ -83,7 +88,7 @@
 		<div class="col-sm-3">
 			<input type="password" class="form-control" id="input-password" name="password" placeholder="<?= UOJLocale::get('enter your new password') ?>" maxlength="20" />
 			<input type="password" class="form-control top-buffer-sm" id="input-confirm_password" placeholder="<?= UOJLocale::get('re-enter your new password') ?>" maxlength="20" />
-			<span class="help-block" id="help-password"><?= UOJLocale::get('leave it blank if you do not want to change the password') ?></span>
+			<span class="help-block" id="help-password"></span>
 		</div>
 	</div>
 	<div id="div-email" class="form-group">
@@ -124,7 +129,7 @@
 	</div>
 	<div class="form-group">
 		<div class="col-sm-offset-2 col-sm-3">
-			<button type="submit" id="button-submit" class="btn btn-secondary"><?= UOJLocale::get('submit') ?></button>
+			<button type="submit" id="button-submit" class="btn btn-primary	"><?= UOJLocale::get('submit') ?></button>
 		</div>
 	</div>
 </form>
@@ -134,9 +139,8 @@
 		var ok = true;
 		ok &= getFormErrorAndShowHelp('email', validateEmail);
 		ok &= getFormErrorAndShowHelp('old_password', validatePassword);
-
-		if ($('#input-password').val().length > 0)
-			ok &= getFormErrorAndShowHelp('password', validateSettingPassword);
+		ok &= getFormErrorAndShowHelp('password', validateSettingPassword);
+		
 		if ($('#input-qq').val().length > 0)
 			ok &= getFormErrorAndShowHelp('qq', validateQQ);
 		ok &= getFormErrorAndShowHelp('motto', validateMotto);
@@ -151,7 +155,7 @@
 			ptag     : $('#input-password').val().length,
 			Qtag     : $('#input-qq').val().length,
 			email    : $('#input-email').val(),
-			password : md5($('#input-password').val(), "<?= getPasswordClientSalt() ?>"),
+			password : md5($('#input-password').val() + "<?= getPasswordClientSalt() ?>"),
 			old_password : md5($('#input-old_password').val(), "<?= getPasswordClientSalt() ?>"),
 			qq       : $('#input-qq').val(),
 			sex      : $('#input-sex').val(),
@@ -159,22 +163,22 @@
 		}, function(msg) {
 			if (msg == 'ok') {
 				BootstrapDialog.show({
-					title   : '修改成功',
-					message : '用户信息修改成功',
+					title   : '激活成功',
+					message : '欢迎参加程序设计基础算法竞赛！',
 					type    : BootstrapDialog.TYPE_SUCCESS,
 					buttons : [{
-						label: '好的',
+						label: '进入',
 						action: function(dialog) {
 							dialog.close();
 						}
 					}],
 					onhidden : function(dialog) {
-						window.location.href = '/user/profile/<?=$myUser['username']?>';
+						window.location.href = '/';
 					}
 				});
 			} else {
 				BootstrapDialog.show({
-					title   : '修改失败',
+					title   : '激活失败',
 					message : msg,
 					type    : BootstrapDialog.TYPE_DANGER,
 					buttons: [{

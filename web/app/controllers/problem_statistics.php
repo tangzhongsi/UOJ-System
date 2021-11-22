@@ -24,7 +24,7 @@
 		while ($row = DB::fetch($result, MYSQLI_NUM)) {
 			if ($row[0] == 0) {
 				$has_score_0 = true;
-			} elseif ($row[0] == 100) {
+			} else if ($row[0] == 100) {
 				$has_score_100 = true;
 			}
 			$score = $row[0] * 100;
@@ -64,7 +64,6 @@
 <?php if ($contest && !hasContestPermission($myUser, $contest) && $contest['cur_progress'] <= CONTEST_IN_PROGRESS): ?>
 <h2 class="text-center text-muted">比赛尚未结束</h2>
 <?php else: ?>
-<h2 class="text-center"><?= UOJLocale::get('problems::accepted submissions') ?></h2>
 <div class="text-right bot-buffer-sm">
 	<div class="btn-group btn-group-sm">
 		<a href="<?=$SERVER['REQUEST_URI']?>" class="<?=$submissions_sort_by_choice == 'time' ? 'btn btn-info btn-xs active' : 'btn btn-info btn-xs'?>" id="submissions-sort-by-run-time"><?= UOJLocale::get('problems::fastest') ?></a>
@@ -84,12 +83,20 @@
 </script>
 
 <?php if ($submissions_sort_by_choice == 'time'): ?>
-	<?php echoSubmissionsList("best_ac_submissions.submission_id = submissions.id and best_ac_submissions.problem_id = {$problem['id']}", 'order by best_ac_submissions.used_time, best_ac_submissions.used_memory, best_ac_submissions.tot_size', array('judge_time_hidden' => '', 'table_name' => 'best_ac_submissions, submissions'), $myUser); ?>
+	<?php echoSubmissionsList(
+		"best_ac_submissions.submission_id = submissions.id and best_ac_submissions.problem_id = {$problem['id']}", 
+		'order by best_ac_submissions.used_time, best_ac_submissions.used_memory, best_ac_submissions.tot_size', 
+		array('judge_time_hidden' => '', 'problem_hidden' => '', 'table_name' => 'best_ac_submissions, submissions'), 
+		$myUser); ?>
 <?php else: ?>
-	<?php echoSubmissionsList("best_ac_submissions.shortest_id = submissions.id and best_ac_submissions.problem_id = {$problem['id']}", 'order by best_ac_submissions.shortest_tot_size, best_ac_submissions.shortest_used_time, best_ac_submissions.shortest_used_memory', array('judge_time_hidden' => '', 'table_name' => 'best_ac_submissions, submissions'), $myUser); ?>
+	<?php echoSubmissionsList(
+		"best_ac_submissions.shortest_id = submissions.id and best_ac_submissions.problem_id = {$problem['id']}", 
+		'order by best_ac_submissions.shortest_tot_size, best_ac_submissions.shortest_used_time, best_ac_submissions.shortest_used_memory', 
+		array('judge_time_hidden' => '', 'problem_hidden' => '', 'table_name' => 'best_ac_submissions, submissions'), 
+		$myUser); ?>
 <?php endif ?>
 
-<h2 class="text-center"><?= UOJLocale::get('problems::score distribution') ?></h2>
+<h2 class="text-center" style="margin-top: 30px"><?= UOJLocale::get('problems::score distribution') ?></h2>
 <div id="score-distribution-chart" style="height: 250px;"></div>
 <script type="text/javascript">
 new Morris.Bar({
@@ -105,60 +112,6 @@ new Morris.Bar({
 		var scr = row.score;
 		return '<div class="morris-hover-row-label">' + 'score: ' + scr + '</div>' +
 			'<div class="morris-hover-point">' + '<a href="/submissions?problem_id=' + <?= $problem['id'] ?> + '&amp;min_score=' + scr + '&amp;max_score=' + scr + '">' + 'number: ' + row.count + '</a>' + '</div>';
-	},
-	resize: true
-});
-</script>
-
-<h2 class="text-center"><?= UOJLocale::get('problems::prefix sum of score distribution') ?></h2>
-<div id="score-distribution-chart-pre" style="height: 250px;"></div>
-<script type="text/javascript">
-new Morris.Line({
-	element: 'score-distribution-chart-pre',
-	data: <?= json_encode($pre_data) ?>,
-	xkey: 'score',
-	ykeys: ['count'],
-	labels: ['number'],
-	lineColors: function(row, sidx, type) {
-		if (type == 'line') {
-			return '#0b62a4';
-		}
-		return getColOfScore(row.src.score / 100);
-	},
-	xLabelFormat: function(x) {
-		return (x.getTime() / 100).toString();
-	},
-	hoverCallback: function(index, options, content, row) {
-		var scr = row.score / 100;
-		return '<div class="morris-hover-row-label">' + 'score: &le;' + scr + '</div>' +
-			'<div class="morris-hover-point">' + '<a href="/submissions?problem_id=' + <?= $problem['id'] ?> + '&amp;max_score=' + scr + '">' + 'number: ' + row.count + '</a>' + '</div>';
-	},
-	resize: true
-});
-</script>
-
-<h2 class="text-center"><?= UOJLocale::get('problems::suffix sum of score distribution') ?></h2>
-<div id="score-distribution-chart-suf" style="height: 250px;"></div>
-<script type="text/javascript">
-new Morris.Line({
-	element: 'score-distribution-chart-suf',
-	data: <?= json_encode($suf_data) ?>,
-	xkey: 'score',
-	ykeys: ['count'],
-	labels: ['number'],
-	lineColors: function(row, sidx, type) {
-		if (type == 'line') {
-			return '#0b62a4';
-		}
-		return getColOfScore(row.src.score / 100);
-	},
-	xLabelFormat: function(x) {
-		return (x.getTime() / 100).toString();
-	},
-	hoverCallback: function(index, options, content, row) {
-		var scr = row.score / 100;
-		return '<div class="morris-hover-row-label">' + 'score: &ge;' + scr + '</div>' +
-			'<div class="morris-hover-point">' + '<a href="/submissions?problem_id=' + <?= $problem['id'] ?> + '&amp;min_score=' + scr + '">' + 'number: ' + row.count + '</a>' + '</div>';
 	},
 	resize: true
 });

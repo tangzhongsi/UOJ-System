@@ -2,10 +2,10 @@
 	requirePHPLib('form');
 	
 	$forgot_form = new UOJForm('forgot');
-	$forgot_form->addInput('username', 'text', '用户名', '',
+	$forgot_form->addInput('username', 'text', '学号', '',
 		function($username, &$vdata) {
 			if (!validateUsername($username)) {
-				return '用户名不合法';
+				return '学号不合法';
 			}
 			$vdata['user'] = queryUser($username);
 			if (!$vdata['user']) {
@@ -41,11 +41,11 @@ EOD;
 		$mailer->addAddress($user['email'], $user['username']);
 		$mailer->Subject = $oj_name_short."密码找回";
 		$mailer->msgHTML($html);
-		if (!$mailer->send()) {
+		if (!$mailer->send()) {  
 			error_log($mailer->ErrorInfo);
-			becomeMsgPage('<div class="text-center"><h2>邮件发送失败，请重试 <span class="glyphicon glyphicon-remove"></span></h2></div>');
+			becomeMsgPage('<div class="text-center"><h2>'.$mailer->ErrorInfo. '<span class="glyphicon glyphicon-remove"></span></h2></div>');
 		} else {
-			becomeMsgPage('<div class="text-center"><h2>邮件发送成功 <span class="glyphicon glyphicon-ok"></span></h2></div>');
+			becomeMsgPage('<div class="text-center" style="padding-top: 50px;"><h2>邮件已发送至 '.$user['username'].'@zju.edu.cn <span class="glyphicon glyphicon-ok"></span></h2></div>');
 		}
 	};
 	$forgot_form->submit_button_config['align'] = 'offset';
@@ -54,6 +54,6 @@ EOD;
 ?>
 <?php echoUOJPageHeader('找回密码') ?>
 <h2 class="page-header">找回密码</h2>
-<h4>请输入需要找回密码的用户名：</h4>
+<!-- <h4>请输入需要找回密码的学号：</h4> -->
 <?php $forgot_form->printHTML(); ?>
 <?php echoUOJPageFooter() ?>

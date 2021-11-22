@@ -204,7 +204,7 @@ function getSubmissionStatusDetails($submission) {
 
 function echoSubmission($submission, $config, $user) {
 	$problem = queryProblemBrief($submission['problem_id']);
-	$submitterLink = getUserLink($submission['submitter']);
+	$submitterLink = $submission['real_name'];
 	
 	if ($submission['score'] == null) {
 		$used_time_str = "/";
@@ -233,9 +233,11 @@ function echoSubmission($submission, $config, $user) {
 			echo '<td>', getProblemLink($problem, '!id_and_title'), '</td>';
 		}
 	}
-	if (!isset($config['submitter_hidden'])) {
-		echo '<td>', $submitterLink, '</td>';
-	}
+	if (!isset($config['submit_time_hidden']))
+	echo '<td><small>', $submission['submit_time'], '</small></td>';
+	if (!isset($config['judge_time_hidden']))
+	echo '<td><small>', $submission['judge_time'], '</small></td>';
+
 	if (!isset($config['result_hidden'])) {
 		echo '<td>';
 		if ($status == 'Judged') {
@@ -254,7 +256,7 @@ function echoSubmission($submission, $config, $user) {
 	if (!isset($config['used_memory_hidden']))
 		echo '<td>', $used_memory_str, '</td>';
 
-	echo '<td>', '<a href="/submission/', $submission['id'], '">', $submission['language'], '</a>', '</td>';
+	echo '<td>', $submission['language'], '</td>';
 
 	if ($submission['tot_size'] < 1024) {
 		$size_str = $submission['tot_size'] . 'b';
@@ -263,10 +265,9 @@ function echoSubmission($submission, $config, $user) {
 	}
 	echo '<td>', $size_str, '</td>';
 
-	if (!isset($config['submit_time_hidden']))
-		echo '<td><small>', $submission['submit_time'], '</small></td>';
-	if (!isset($config['judge_time_hidden']))
-		echo '<td><small>', $submission['judge_time'], '</small></td>';
+	if (!isset($config['submitter_hidden'])) {
+		echo '<td>', $submitterLink, '</td>';
+	}
 	echo '</tr>';
 	if ($show_status_details) {
 		echo '<tr id="', "status_details_{$submission['id']}", '" class="info">';
@@ -286,8 +287,10 @@ function echoSubmissionsListOnlyOne($submission, $config, $user) {
 		echo '<th>ID</th>';
 	if (!isset($config['problem_hidden']))
 		echo '<th>'.UOJLocale::get('problems::problem').'</th>';
-	if (!isset($config['submitter_hidden']))
-		echo '<th>'.UOJLocale::get('problems::submitter').'</th>';
+	if (!isset($config['submit_time_hidden']))
+		echo '<th>'.UOJLocale::get('problems::submit time').'</th>';
+	if (!isset($config['judge_time_hidden']))
+		echo '<th>'.UOJLocale::get('problems::judge time').'</th>';
 	if (!isset($config['result_hidden']))
 		echo '<th>'.UOJLocale::get('problems::result').'</th>';
 	if (!isset($config['used_time_hidden']))
@@ -296,10 +299,8 @@ function echoSubmissionsListOnlyOne($submission, $config, $user) {
 		echo '<th>'.UOJLocale::get('problems::used memory').'</th>';
 	echo '<th>'.UOJLocale::get('problems::language').'</th>';
 	echo '<th>'.UOJLocale::get('problems::file size').'</th>';
-	if (!isset($config['submit_time_hidden']))
-		echo '<th>'.UOJLocale::get('problems::submit time').'</th>';
-	if (!isset($config['judge_time_hidden']))
-		echo '<th>'.UOJLocale::get('problems::judge time').'</th>';
+	if (!isset($config['submitter_hidden']))
+		echo '<th>'.UOJLocale::get('problems::submitter').'</th>';
 	echo '</tr>';
 	echo '</thead>';
 	echo '<tbody>';
@@ -327,9 +328,13 @@ function echoSubmissionsList($cond, $tail, $config, $user) {
 		$col_names[] = 'submissions.problem_id';
 		$col_names[] = 'submissions.contest_id';
 	}
-	if (!isset($config['submitter_hidden'])) {
-		$header_row .= '<th>'.UOJLocale::get('problems::submitter').'</th>';
-		$col_names[] = 'submissions.submitter';
+	if (!isset($config['submit_time_hidden'])) {
+		$header_row .= '<th>'.UOJLocale::get('problems::submit time').'</th>';
+		$col_names[] = 'submissions.submit_time';
+	}
+	if (!isset($config['judge_time_hidden'])) {
+		$header_row .= '<th>'.UOJLocale::get('problems::judge time').'</th>';
+		$col_names[] = 'submissions.judge_time';
 	}
 	if (!isset($config['result_hidden'])) {
 		$header_row .= '<th>'.UOJLocale::get('problems::result').'</th>';
@@ -347,14 +352,11 @@ function echoSubmissionsList($cond, $tail, $config, $user) {
 	$header_row .= '<th>'.UOJLocale::get('problems::file size').'</th>';
 	$col_names[] = 'submissions.tot_size';
 
-	if (!isset($config['submit_time_hidden'])) {
-		$header_row .= '<th>'.UOJLocale::get('problems::submit time').'</th>';
-		$col_names[] = 'submissions.submit_time';
+	if (!isset($config['submitter_hidden'])) {
+		$header_row .= '<th>'.UOJLocale::get('problems::submitter').'</th>';
+		$col_names[] = 'submissions.submitter';
 	}
-	if (!isset($config['judge_time_hidden'])) {
-		$header_row .= '<th>'.UOJLocale::get('problems::judge time').'</th>';
-		$col_names[] = 'submissions.judge_time';
-	}
+	$col_names[] = 'submissions.real_name';
 	$header_row .= '</tr>';
 	
 	$table_name = isset($config['table_name']) ? $config['table_name'] : 'submissions';
@@ -422,7 +424,7 @@ function echoSubmissionContent($submission, $requirement) {
 			}
 			echo '<div class="card border-info mb-3">';
 			echo '<div class="card-header bg-info">';
-			echo '<h4 class="card-title">'.$req['name'].'</h4>';
+			echo '<h4 class="card-title">代码</h4>';
 			echo '</div>';
 			echo '<div class="card-body">';
 			echo '<pre><code class="'.$sh_class.'">'.$file_content."\n".'</code></pre>';
@@ -549,9 +551,9 @@ class JudgementDetailsPrinter {
 			echo '<div class="row">';
 			echo '<div class="col-sm-2">';
 			if ($test_num > 0) {
-				echo '<h4 class="card-title">', 'Test #', $test_num, ': ', '</h4>';
+				echo '<p class="card-title">', 'Test #', $test_num, ': ', '</p>';
 			} else {
-				echo '<h4 class="card-title">', 'Extra Test:', '</h4>';
+				echo '<p class="card-title">', 'Extra Test:', '</p>';
 			}
 			echo '</div>';
 				
@@ -614,7 +616,7 @@ class JudgementDetailsPrinter {
 			}
 			echo '<div class="row">';
 			echo '<div class="col-sm-2">';
-			echo '<h4 class="card-title">', 'Custom Test: ', '</h4>';
+			echo '<p class="card-title">', 'Custom Test: ', '</p>';
 			echo '</div>';
 				
 			echo '<div class="col-sm-4">';

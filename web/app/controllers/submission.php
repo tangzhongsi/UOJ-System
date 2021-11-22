@@ -129,26 +129,7 @@
 	$REQUIRE_LIB['shjs'] = "";
 ?>
 <?php echoUOJPageHeader(UOJLocale::get('problems::submission').' #'.$submission['id']) ?>
-<?php echoSubmissionsListOnlyOne($submission, array(), $myUser) ?>
-
-<?php if ($should_show_content): ?>
-	<?php echoSubmissionContent($submission, getProblemSubmissionRequirement($problem)) ?>
-	<?php if ($hackable): ?>
-		<p class="text-center">
-			这程序好像有点Bug，我给组数据试试？ <button id="button-display-hack" type="button" class="btn btn-danger btn-xs">Hack!</button>
-		</p>
-		<div id="div-form-hack" style="display:none" class="bot-buffer-md">
-			<?php $hack_form->printHTML() ?>
-		</div>
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$('#button-display-hack').click(function() {
-					$('#div-form-hack').toggle('fast');
-				});
-			});
-		</script>
-	<?php endif ?>
-<?php endif ?>
+<?php echoSubmissionsListOnlyOne($submission, array('judge_time_hidden' => '', 'problem_hidden' => ''), $myUser) ?>
 
 <?php if ($should_show_all_details): ?>
 	<div class="card border-info mb-3">
@@ -169,6 +150,25 @@
 			<?php endif ?>
 		</div>
 	</div>
+<?php endif ?>
+
+<?php if ($should_show_content || isSuperUser($myUser)): ?>
+	<?php echoSubmissionContent($submission, getProblemSubmissionRequirement($problem)) ?>
+	<?php if ($hackable): ?>
+		<p class="text-center">
+			这程序好像有点Bug，我给组数据试试？ <button id="button-display-hack" type="button" class="btn btn-danger btn-xs">Hack!</button>
+		</p>
+		<div id="div-form-hack" style="display:none" class="bot-buffer-md">
+			<?php $hack_form->printHTML() ?>
+		</div>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#button-display-hack').click(function() {
+					$('#div-form-hack').toggle('fast');
+				});
+			});
+		</script>
+	<?php endif ?>
 <?php endif ?>
 
 <?php if (isset($rejudge_form)): ?>

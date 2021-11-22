@@ -42,6 +42,7 @@ return [
 	'hack' => 'Hack',
 	'submission id' => 'Submission ID',
 	'my submissions' => 'My Submissions',
+	'return to problem' => 'Return',
 	'hacks by me' => 'Hacks by me',
 	'hacks to me' => 'Hacks to me'
 ];

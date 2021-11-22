@@ -53,7 +53,7 @@
 	if ($custom_test_requirement && $_GET['get'] == 'custom-test-status-details' && Auth::check()) {
 		if ($custom_test_submission == null) {
 			echo json_encode(null);
-		} elseif ($custom_test_submission['status'] != 'Judged') {
+		} else if ($custom_test_submission['status'] != 'Judged') {
 			echo json_encode(array(
 				'judged' => false,
 				'html' => getSubmissionStatusDetails($custom_test_submission)
@@ -110,11 +110,11 @@
 		$result_json = json_encode($result);
 		
 		if ($is_in_contest) {
-			DB::query("insert into submissions (problem_id, contest_id, submit_time, submitter, content, language, tot_size, status, result, is_hidden) values (${problem['id']}, ${contest['id']}, now(), '${myUser['username']}', '$esc_content', '$esc_language', $tot_size, '${result['status']}', '$result_json', 0)");
+			DB::query("insert into submissions (problem_id, contest_id, submit_time, submitter, real_name, content, language, tot_size, status, result, is_hidden) values (${problem['id']}, ${contest['id']}, now(), '${myUser['username']}', '${myUser['motto']}', '$esc_content', '$esc_language', $tot_size, '${result['status']}', '$result_json', 0)");
 		} else {
-			DB::query("insert into submissions (problem_id, submit_time, submitter, content, language, tot_size, status, result, is_hidden) values (${problem['id']}, now(), '${myUser['username']}', '$esc_content', '$esc_language', $tot_size, '${result['status']}', '$result_json', {$problem['is_hidden']})");
+			DB::query("insert into submissions (problem_id, submit_time, submitter, real_name, content, language, tot_size, status, result, is_hidden) values (${problem['id']}, now(), '${myUser['username']}', '${myUser['motto']}', '$esc_content', '$esc_language', $tot_size, '${result['status']}', '$result_json', {$problem['is_hidden']})");
 		}
-	}
+ 	}
 	function handleCustomTestUpload($zip_file_name, $content, $tot_size) {
 		global $problem, $contest, $myUser;
 		
@@ -139,7 +139,7 @@
 		$result_json = json_encode($result);
 		
 		DB::insert("insert into custom_test_submissions (problem_id, submit_time, submitter, content, status, result) values ({$problem['id']}, now(), '{$myUser['username']}', '$esc_content', '{$result['status']}', '$result_json')");
-	}
+ 	}
 	
 	if ($can_use_zip_upload) {
 		$zip_answer_form = newZipSubmissionForm('zip_answer',
@@ -212,13 +212,7 @@ EOD
 	$time_limit = $limit['time_limit'];
 	$memory_limit = $limit['memory_limit'];
 ?>
-<div class="row d-flex justify-content-center">
-	<span class="badge badge-secondary mr-1">时间限制:<?=$time_limit!=null?"$time_limit s":"N/A"?></span>
-	<span class="badge badge-secondary mr-1">空间限制:<?=$memory_limit!=null?"$memory_limit MB":"N/A"?></span>
-</div>
-<div class="float-right">
-	<?= getClickZanBlock('P', $problem['id'], $problem['zan']) ?>
-</div>
+
 
 <?php if ($contest): ?>
 <div class="page-header row">
@@ -235,40 +229,14 @@ $('#contest-countdown').countdown(<?= $contest['end_time']->getTimestamp() - UOJ
 <?php endif ?>
 <?php else: ?>
 <h1 class="page-header text-center">#<?= $problem['id']?>. <?= $problem['title'] ?></h1>
-<a role="button" class="btn btn-info float-right" href="/problem/<?= $problem['id'] ?>/statistics"><span class="glyphicon glyphicon-stats"></span> <?= UOJLocale::get('problems::statistics') ?></a>
+<div class="page-info row d-flex justify-content-center">
+	<span class="badge badge-secondary mr-1">时间限制:<?=$time_limit!=null?"$time_limit s":"N/A"?></span>
+	<span class="badge badge-secondary mr-1">空间限制:<?=$memory_limit!=null?"$memory_limit MB":"N/A"?></span>
+</div>
 <?php endif ?>
 
-<ul class="nav nav-tabs" role="tablist">
-	<li class="nav-item"><a class="nav-link active" href="#tab-statement" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-book"></span> <?= UOJLocale::get('problems::statement') ?></a></li>
-	<li class="nav-item"><a class="nav-link" href="#tab-submit-answer" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-upload"></span> <?= UOJLocale::get('problems::submit') ?></a></li>
-	<?php if ($custom_test_requirement): ?>
-	<li class="nav-item"><a class="nav-link" href="#tab-custom-test" role="tab" data-toggle="tab"><span class="glyphicon glyphicon-console"></span> <?= UOJLocale::get('problems::custom test') ?></a></li>
-	<?php endif ?>
-	<?php if (hasProblemPermission($myUser, $problem)): ?>
-	<li class="nav-item"><a class="nav-link" href="/problem/<?= $problem['id'] ?>/manage/statement" role="tab"><?= UOJLocale::get('problems::manage') ?></a></li>
-	<?php endif ?>
-	<?php if ($contest): ?>
-	<li class="nav-item"><a class="nav-link" href="/contest/<?= $contest['id'] ?>" role="tab"><?= UOJLocale::get('contests::back to the contest') ?></a></li>
-	<?php endif ?>
-</ul>
 <div class="tab-content">
-	<div class="tab-pane active" id="tab-statement">
-		<article class="top-buffer-md"><?= $problem_content['statement'] ?></article>
-	</div>
-	<div class="tab-pane" id="tab-submit-answer">
-		<div class="top-buffer-sm"></div>
-		<?php if ($can_use_zip_upload): ?>
-		<?php $zip_answer_form->printHTML(); ?>
-		<hr />
-		<strong><?= UOJLocale::get('problems::or upload files one by one') ?><br /></strong>
-		<?php endif ?>
-		<?php $answer_form->printHTML(); ?>
-	</div>
-	<?php if ($custom_test_requirement): ?>
-	<div class="tab-pane" id="tab-custom-test">
-		<div class="top-buffer-sm"></div>
-		<?php $custom_test_form->printHTML(); ?>
-	</div>
-	<?php endif ?>
+	<article class="top-buffer-md"><?= $problem_content['statement'] ?></article>
+	<?php $answer_form->printHTML(); ?>
 </div>
 <?php echoUOJPageFooter() ?>

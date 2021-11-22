@@ -352,6 +352,8 @@ EOD;
 			$this->appendHTML(<<<EOD
 <div class="form-group" id="form-group-$name"></div>
 <script type="text/javascript">
+// set default type as advanced
+$.cookie('uoj_source_code_form_group_preferred_upload_type', 'advanced', { expires: 7, path: '/' });
 $('#form-group-$name').source_code_form_group('$name', '$text', $langs_options_json);
 </script>
 EOD
@@ -403,7 +405,7 @@ EOD
 					$this->submit_button_config['text'] = UOJLocale::get('submit');
 				}
 				if (!isset($this->submit_button_config['class_str'])) {
-					$this->submit_button_config['class_str'] = 'btn btn-secondary';
+					$this->submit_button_config['class_str'] = 'btn btn-primary';
 				}
 				if ($this->submit_button_config['align'] == 'offset') {
 					echo '<div class="form-group">';

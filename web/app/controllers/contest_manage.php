@@ -61,7 +61,7 @@
 			global $contest;
 			if ($type == '+') {
 				DB::query("insert into contests_permissions (contest_id, username) values (${contest['id']}, '$username')");
-			} elseif ($type == '-') {
+			} else if ($type == '-') {
 				DB::query("delete from contests_permissions where contest_id = ${contest['id']} and username = '$username'");
 			}
 		}
@@ -92,7 +92,7 @@
 			
 			if ($type == '+') {
 				DB::insert("insert into contests_problems (contest_id, problem_id) values ({$contest['id']}, '$problem_id')");
-			} elseif ($type == '-') {
+			} else if ($type == '-') {
 				DB::delete("delete from contests_problems where contest_id = {$contest['id']} and problem_id = '$problem_id'");
 			}
 			
@@ -217,7 +217,7 @@
 			<thead>
 				<tr>
 					<th>#</th>
-					<th>用户名</th>
+					<th>学号</th>
 				</tr>
 			</thead>
 			<tbody>

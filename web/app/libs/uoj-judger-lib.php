@@ -1,7 +1,7 @@
 <?php
 	global $uojSupportedLanguages, $uojMainJudgerWorkPath;
 	// $uojSupportedLanguages = array('C', 'C++', 'C++11', 'Java8', 'Java11', 'Pascal', 'Python2', 'Python3');
-	$uojSupportedLanguages = array('C', 'C++');
+	$uojSupportedLanguages = array('C', 'C++', 'Python3');
 	$uojMainJudgerWorkPath = "/opt/uoj/judger/uoj_judger";
 	
 	function authenticateJudger() {
@@ -172,8 +172,8 @@
 		DB::query("update submissions set judge_time = NULL , result = '' , score = NULL , status = 'Waiting Rejudge' where id = ${submission['id']}");
 	}
 	function updateBestACSubmissions($username, $problem_id) {
-		$best = DB::selectFirst("select id, used_time, used_memory, tot_size from submissions where submitter = '$username' and problem_id = $problem_id and score > 0 order by used_time, used_memory, tot_size asc limit 1");
-		$shortest = DB::selectFirst("select id, used_time, used_memory, tot_size from submissions where submitter = '$username' and problem_id = $problem_id and score > 0 order by tot_size, used_time, used_memory asc limit 1");
+		$best = DB::selectFirst("select id, used_time, used_memory, tot_size from submissions where submitter = '$username' and problem_id = $problem_id and score > 0 order by score desc, used_time, used_memory, tot_size asc limit 1");
+		$shortest = DB::selectFirst("select id, used_time, used_memory, tot_size from submissions where submitter = '$username' and problem_id = $problem_id and score > 0 order by score desc, tot_size, used_time, used_memory asc limit 1");
 		DB::delete("delete from best_ac_submissions where submitter = '$username' and problem_id = $problem_id");
 		if ($best) {
 			DB::insert("insert into best_ac_submissions (problem_id, submitter, submission_id, used_time, used_memory, tot_size, shortest_id, shortest_used_time, shortest_used_memory, shortest_tot_size) values ($problem_id, '$username', ${best['id']}, ${best['used_time']}, ${best['used_memory']}, ${best['tot_size']}, ${shortest['id']}, ${shortest['used_time']}, ${shortest['used_memory']}, ${shortest['tot_size']})");

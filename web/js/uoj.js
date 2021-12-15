@@ -743,7 +743,7 @@ $.fn.source_code_form_group = function(name, text, langs_options_html) {
 						advanced_editor.save();
 					});
 					$(advanced_editor.getWrapperElement()).css('box-shadow', '0 2px 10px rgba(0,0,0,0.2)');
-					advanced_editor.focus();
+					// advanced_editor.focus();
 				});
 			});
 		}

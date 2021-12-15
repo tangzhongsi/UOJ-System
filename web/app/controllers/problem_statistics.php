@@ -85,13 +85,13 @@
 <?php if ($submissions_sort_by_choice == 'time'): ?>
 	<?php echoSubmissionsList(
 		"best_ac_submissions.submission_id = submissions.id and best_ac_submissions.problem_id = {$problem['id']}", 
-		'order by best_ac_submissions.used_time, best_ac_submissions.used_memory, best_ac_submissions.tot_size', 
+		'order by submissions.score desc, best_ac_submissions.used_time, best_ac_submissions.used_memory, best_ac_submissions.tot_size asc', 
 		array('judge_time_hidden' => '', 'problem_hidden' => '', 'table_name' => 'best_ac_submissions, submissions'), 
 		$myUser); ?>
 <?php else: ?>
 	<?php echoSubmissionsList(
 		"best_ac_submissions.shortest_id = submissions.id and best_ac_submissions.problem_id = {$problem['id']}", 
-		'order by best_ac_submissions.shortest_tot_size, best_ac_submissions.shortest_used_time, best_ac_submissions.shortest_used_memory', 
+		'order by submissions.score desc, best_ac_submissions.shortest_tot_size, best_ac_submissions.shortest_used_time, best_ac_submissions.shortest_used_memory asc', 
 		array('judge_time_hidden' => '', 'problem_hidden' => '', 'table_name' => 'best_ac_submissions, submissions'), 
 		$myUser); ?>
 <?php endif ?>

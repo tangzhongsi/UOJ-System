@@ -105,6 +105,7 @@ pre {
 .card-uoj-wrong>.card-header> div > div:nth-child(3){
 	color: rgb(204, 0, 0);
 	font-weight: bold;
+	white-space: nowrap;
 }
 .card-uoj-wrong>.card-header:hover {
 	background-color: rgba(0,0,0,.01);
@@ -451,7 +452,9 @@ article {
 #form-search div label {
 	margin-right: 10px;
 }
-
+#form-group-problem_id {
+	display: none;
+}
 #form-group-language {
 	display: none;
 }

@@ -13,9 +13,9 @@ cd /path/to/uoj-system
 ```
 sudo docker run --name uoj -dit -p 80:80 \
     --cap-add SYS_PTRACE \
-    -v `pwd`/web:/opt/uoj/web \
-    -v `pwd`/install:/opt/uoj/install/bundle \
-    -v `pwd`/testdata:/opt/uoj/testdata \
+    -v "`pwd`"/web:/opt/uoj/web \
+    -v "`pwd`"/install:/opt/uoj/install/bundle \
+    -v "`pwd`"/testdata:/opt/uoj/testdata \
     universaloj/uoj-system
 ```
 5. 浏览器访问测试

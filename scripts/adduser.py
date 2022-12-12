@@ -33,6 +33,6 @@ def add_user(usergroup, username, password, real_name):
 
 if __name__ == "__main__":
     ip = 'localhost'
-    add_user('S', '22121214', '123456', '唐仲思')
-    # add_user('S', '22221310', '123456', '陆飞洋')
+    add_user('S', '22121214', '000000', '唐仲思')
+    add_user('S', '22221310', '000000', '陆飞洋')
     add_users_from_csv(os.path.join(cur_dir, '2022.csv'))

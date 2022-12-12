@@ -128,6 +128,9 @@ initProgress(){
     mkdir /var/uoj_data/upload/1
     cp /opt/uoj/testdata/* /var/uoj_data/upload/1/
     php /var/www/uoj/app/cli.php sync-problem-data 1 2> /dev/null
+    #Set file permissions
+    chown -R www-data:www-data /var/www/uoj/
+    chown -R www-data:www-data /var/uoj_data/
 
     #Replace password placeholders
     sed -i -e "s/_main_judger_password_/$_main_judger_password_/g" -e "s/_judger_socket_password_/$_judger_socket_password_/g" /opt/uoj/judger/.conf.json

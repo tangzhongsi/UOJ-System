@@ -1,3 +1,33 @@
+# 程序设计基础（2021秋冬）算法竞赛OJ
+## 部署
+1. 安装 docker
+2. 拉取官方镜像
+```
+sudo docker pull universaloj/uoj-system
+```
+3. 工作目录切换为代码根目录（该文档所在目录）
+```
+cd /path/to/uoj-system
+```
+4. 挂载本地代码运行 docker
+```
+sudo docker run --name uoj -dit -p 80:80 \
+    --cap-add SYS_PTRACE \
+    -v `pwd`/web:/opt/uoj/web \
+    -v `pwd`/install:/opt/uoj/install/bundle \
+    -v `pwd`/testdata:/opt/uoj/testdata \
+    universaloj/uoj-system
+```
+5. 浏览器访问测试
+```
+http://your-ip
+```
+
+\
+以下为官方说明文档
+
+----
+
 <p align="center"><img src="https://github.com/UniversalOJ/UOJ-System/blob/master/web/images/logo.png?raw=true"></p>
 
 # Universal Online Judge

@@ -54,9 +54,9 @@
 			DB::update("update user_info set sex = '$esc_sex' where username = '{$myUser['username']}'");
 		}
 		
-		if (validateMotto($_POST['motto'])) {
-			$esc_motto = DB::escape($_POST['motto']);
-			DB::update("update user_info set motto = '$esc_motto' where username = '{$myUser['username']}'");
+		if (validateRealName($_POST['real_name'])) {
+			$esc_real_name = DB::escape($_POST['real_name']);
+			DB::update("update user_info set real_name = '$esc_real_name' where username = '{$myUser['username']}'");
 		}
 		
 		DB::update("update user_info set register_time = now() where username = '{$myUser['username']}'");
@@ -115,11 +115,11 @@
 			</select>
 		</div>
 	</div>
-	<div id="div-motto" class="form-group">
-		<label for="input-motto" class="col-sm-2 control-label"><?= UOJLocale::get('motto') ?></label>
+	<div id="div-real_name" class="form-group">
+		<label for="input-real_name" class="col-sm-2 control-label"><?= UOJLocale::get('real_name') ?></label>
 		<div class="col-sm-3">
-			<textarea class="form-control" id="input-motto"  name="motto"><?=HTML::escape($myUser['motto'])?></textarea>
-			<span class="help-block" id="help-motto"></span>
+			<textarea class="form-control" id="input-real_name"  name="real_name"><?=HTML::escape($myUser['real_name'])?></textarea>
+			<span class="help-block" id="help-real_name"></span>
 		</div>
 	</div>
 	<div class="form-group">
@@ -143,7 +143,7 @@
 		
 		if ($('#input-qq').val().length > 0)
 			ok &= getFormErrorAndShowHelp('qq', validateQQ);
-		ok &= getFormErrorAndShowHelp('motto', validateMotto);
+		ok &= getFormErrorAndShowHelp('real_name', validateRealName);
 		return ok;
 	}
 	function submitUpdatePost() {
@@ -159,7 +159,7 @@
 			old_password : md5($('#input-old_password').val(), "<?= getPasswordClientSalt() ?>"),
 			qq       : $('#input-qq').val(),
 			sex      : $('#input-sex').val(),
-			motto    : $('#input-motto').val()
+			real_name    : $('#input-real_name').val()
 		}, function(msg) {
 			if (msg == 'ok') {
 				BootstrapDialog.show({

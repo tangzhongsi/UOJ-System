@@ -24,7 +24,7 @@ return [
 	'email' => 'Email',
 	'QQ' => 'QQ',
 	'sex' => 'Sex',
-	'motto' => 'Motto',
+	'real_name' => 'RealName',
 	'rating' => 'Rating',
 	'view all' => 'View all',
 	'appraisal' => 'Appraisal',

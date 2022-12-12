@@ -11,7 +11,7 @@ class Auth {
 	}
 	public static function realName() {
 		global $myUser;
-		return $myUser['motto'];
+		return $myUser['real_name'];
 	}
 	public static function user() {
 		global $myUser;

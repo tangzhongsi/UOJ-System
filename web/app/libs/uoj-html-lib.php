@@ -932,7 +932,7 @@ function echoRanklist($config = array()) {
 	$header_row .= '<tr>';
 	$header_row .= '<th style="width: 5em;">#</th>';
 	$header_row .= '<th style="width: 14em;">'.UOJLocale::get('username').'</th>';
-	$header_row .= '<th style="width: 50em;">'.UOJLocale::get('motto').'</th>';
+	$header_row .= '<th style="width: 50em;">'.UOJLocale::get('real_name').'</th>';
 	$header_row .= '<th style="width: 5em;">'.UOJLocale::get('rating').'</th>';
 	$header_row .= '</tr>';
 	
@@ -951,13 +951,13 @@ function echoRanklist($config = array()) {
 		echo '<tr>';
 		echo '<td>' . $user['rank'] . '</td>';
 		echo '<td>' . getUserLink($user['username']) . '</td>';
-		echo '<td>' . HTML::escape($user['motto']) . '</td>';
+		echo '<td>' . HTML::escape($user['real_name']) . '</td>';
 		echo '<td>' . $user['rating'] . '</td>';
 		echo '</tr>';
 		
 		$users[] = $user;
 	};
-	$col_names = array('username', 'rating', 'motto');
+	$col_names = array('username', 'rating', 'real_name');
 	$tail = 'order by rating desc, username asc';
 	
 	if (isset($config['top10'])) {

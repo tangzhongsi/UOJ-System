@@ -271,7 +271,7 @@ function validateQQ(str) {
 		return '';
 	}
 }
-function validateMotto(str) {
+function validateRealName(str) {
 	if (str.length > 50) {
 		return '不能超过50字';
 	} else {

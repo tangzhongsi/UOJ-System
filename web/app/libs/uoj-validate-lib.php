@@ -16,8 +16,8 @@ function validateQQ($QQ) {
 	return is_string($QQ) && strlen($QQ) <= 15 && preg_match('/^[0-9]{5,15}$/', $QQ);
 }
 
-function validateMotto($motto) {
-	return is_string($motto) && ($len = mb_strlen($motto, 'UTF-8')) !== false && $len <= 50;
+function validateRealName($real_name) {
+	return is_string($real_name) && ($len = mb_strlen($real_name, 'UTF-8')) !== false && $len <= 50;
 }
 
 function validateUInt($x) { // [0, 1000000000)

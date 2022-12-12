@@ -24,7 +24,7 @@ return [
 	'email' => 'Email',
 	'QQ' => 'QQ',
 	'sex' => '性别',
-	'motto' => '格言',
+	'real_name' => '真实姓名',
 	'rating' => 'Rating',
 	'view all' => '查看全部',
 	'appraisal' => '评价',

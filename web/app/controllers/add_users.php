@@ -11,7 +11,7 @@ if (!isset($_POST['password'])) {
 $usergroup = $_POST['usergroup'] ? $_POST['usergroup'] : 'U';
 $username = $_POST['username'];
 $password = md5($_POST['password'] . getPasswordClientSalt());
-$motto = $_POST['motto'];
+$real_name = $_POST['real_name'];
 $email = $username.'@zju.edu.cn';
 if (!validateUsername($username)) {
     echo $username . " 注册失败：无效学号。";
@@ -36,7 +36,7 @@ $esc_email = DB::escape($email);
 
 $svn_pw = uojRandString(10);
 
-DB::query("insert into user_info (usergroup, username, email, password, svn_password, register_time, motto) values ('$usergroup', '$username', '$esc_email', '$password', '$svn_pw', '', '$motto')");
+DB::query("insert into user_info (usergroup, username, email, password, svn_password, register_time, real_name) values ('$usergroup', '$username', '$esc_email', '$password', '$svn_pw', '', '$real_name')");
 
 echo "欢迎你！" . $username . "，你已成功注册。";
 return;

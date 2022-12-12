@@ -110,9 +110,9 @@
 		$result_json = json_encode($result);
 		
 		if ($is_in_contest) {
-			DB::query("insert into submissions (problem_id, contest_id, submit_time, submitter, real_name, content, language, tot_size, status, result, is_hidden) values (${problem['id']}, ${contest['id']}, now(), '${myUser['username']}', '${myUser['motto']}', '$esc_content', '$esc_language', $tot_size, '${result['status']}', '$result_json', 0)");
+			DB::query("insert into submissions (problem_id, contest_id, submit_time, submitter, real_name, content, language, tot_size, status, result, is_hidden) values (${problem['id']}, ${contest['id']}, now(), '${myUser['username']}', '${myUser['real_name']}', '$esc_content', '$esc_language', $tot_size, '${result['status']}', '$result_json', 0)");
 		} else {
-			DB::query("insert into submissions (problem_id, submit_time, submitter, real_name, content, language, tot_size, status, result, is_hidden) values (${problem['id']}, now(), '${myUser['username']}', '${myUser['motto']}', '$esc_content', '$esc_language', $tot_size, '${result['status']}', '$result_json', {$problem['is_hidden']})");
+			DB::query("insert into submissions (problem_id, submit_time, submitter, real_name, content, language, tot_size, status, result, is_hidden) values (${problem['id']}, now(), '${myUser['username']}', '${myUser['real_name']}', '$esc_content', '$esc_language', $tot_size, '${result['status']}', '$result_json', {$problem['is_hidden']})");
 		}
  	}
 	function handleCustomTestUpload($zip_file_name, $content, $tot_size) {

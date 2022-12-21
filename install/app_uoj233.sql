@@ -486,7 +486,7 @@ CREATE TABLE `problems` (
 
 LOCK TABLES `problems` WRITE;
 /*!40000 ALTER TABLE `problems` DISABLE KEYS */;
-INSERT INTO `problems` VALUES (1,'Combination',0,'[{\"name\":\"answer\",\"type\":\"source code\",\"file_name\":\"answer.code\"}]',0,'{\"view_content_type\":\"SELF\",\"view_details_type\":\"ALL\"}',0,0,1);
+INSERT INTO `problems` VALUES (1,'Combination',0,'[{\"name\":\"answer\",\"type\":\"source code\",\"file_name\":\"answer.code\"}]',0,'{\"view_content_type\":\"SELF\",\"view_details_type\":\"ALL\"}',1,0,0);
 /*!40000 ALTER TABLE `problems` ENABLE KEYS */;
 UNLOCK TABLES;
 

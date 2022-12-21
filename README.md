@@ -22,7 +22,11 @@ sudo docker run --name uoj -dit -p 80:80 \
 ```
 http://your-ip
 ```
-
+## 用户注册
+使用下面的脚本进行用户注册，包括单个用户和批量用户注册
+```
+scripts/addusr.py
+```
 \
 以下为官方说明文档
 

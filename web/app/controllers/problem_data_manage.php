@@ -463,6 +463,17 @@ EOD
 	$hackable_form->submit_button_config['text'] = $problem['hackable'] ? '禁止使用hack' : '允许使用hack';
 	$hackable_form->submit_button_config['smart_confirm'] = '';
 
+	$ranking_form = new UOJForm('ranking');
+	$ranking_form->handle = function() {
+		global $problem;
+		$problem['zan'] = !$problem['zan'];	
+		$ranking = $problem['zan'] ? 1 : 0;
+		DB::query("update problems set zan = $ranking where id = ${problem['id']}");
+	};
+	$ranking_form->submit_button_config['class_str'] = 'btn btn-warning btn-block';
+	$ranking_form->submit_button_config['text'] = $problem['zan'] ? '暂停实时排名' : '开启实时排名';
+	$ranking_form->submit_button_config['smart_confirm'] = '';
+
 	$data_form = new UOJForm('data');
 	$data_form->handle = function() {
 		global $problem, $myUser;
@@ -598,6 +609,7 @@ EOD
 	}
 	
 	$hackable_form->runAtServer();
+	$ranking_form->runAtServer();
 	$view_type_form->runAtServer();
 	$data_form->runAtServer();
 	$clear_data_form->runAtServer();
@@ -655,12 +667,12 @@ EOD
 	</div>
 	<div class="col-md-2 top-buffer-sm">
 		<div class="top-buffer-md">
-			<?php if ($problem['hackable']): ?>
-				<span class="glyphicon glyphicon-ok"></span> hack功能已启用
+			<?php if ($problem['zan']): ?>
+				<span class="glyphicon glyphicon-ok"></span> 实时排名已开启
 			<?php else: ?>
-				<span class="glyphicon glyphicon-remove"></span> hack功能已禁止
+				<span class="glyphicon glyphicon-pause"></span> 实时排名已暂停
 			<?php endif ?>
-			<?php $hackable_form->printHTML() ?>
+			<?php $ranking_form->printHTML() ?>
 		</div>
 		<div class="top-buffer-md">
 		<?php if ($problem['hackable']): ?>

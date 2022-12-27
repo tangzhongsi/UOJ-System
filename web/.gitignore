@@ -1,4 +1,4 @@
 .idea
 .php_cs.cache
 phpmyadmin/tmp
-app/storage/submission
+app/storage/
